@@ -1,4 +1,3 @@
-from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
 
@@ -8,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 
 
-from aiogram import Bot
+from aiogram import F,Router
 
 from .test import test_router, Test
 from .upload_file import upload_router, TaskUpload
@@ -61,7 +60,7 @@ async def cmd_upload_task(message: Message, state: FSMContext):
     F.text.in_(TASKS_WEEK)
 )
 async def week_chosen(message: Message, state: FSMContext):
-    await state.update_data(chosen_week=message.text.lower())
+    await state.update_data(chosen_week=int(message.text))
     await message.answer(
         text="Выберите тип задания",
         reply_markup=make_row_keyboard(TASK_OPTIONS)
@@ -72,7 +71,7 @@ async def week_chosen(message: Message, state: FSMContext):
 @router.message(
     Task.choose_task_week
 )
-async def week_chosen(message: Message):
+async def week_wrong_choice(message: Message):
     await message.answer(
         text="Неверный ввод. Укажите номер цифрами",
     )
@@ -104,8 +103,9 @@ async def food_chosen(message: Message, state: FSMContext):
     await message.answer(
         text="Начинаем тест"
     )
-    await state.set_state(Test.question)
+    await state.set_state(Test.first_question)
 
+### Homework
 
 @router.message(
     Task.choose_task_type, 
