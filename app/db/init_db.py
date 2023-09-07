@@ -13,10 +13,40 @@ cursor.execute('''
 cursor.execute('''
     CREATE TABLE user (
         user_id INTEGER primary key autoincrement,
+        user_name TEXT,
+        user_surname TEXT,
+        mipt_mail TEXT,
         telegram_id INTEGER 
     )'''
 )
 
+cursor.execute('''
+    DROP TABLE IF EXISTS homework         
+''')
+               
+
+cursor.execute('''
+    CREATE TABLE homework (
+        homework_id INTEGER primary key autoincrement,
+        week TEXT,
+        homework_link TEXT
+    )'''
+)
+               
+cursor.execute('''
+    DROP TABLE IF EXISTS homework_results     
+''')
+
+cursor.execute('''
+    CREATE TABLE homework_results (
+        homework_id INTEGER primary key autoincrement,
+        user_id INTEGER,
+        week INTEGER,
+        telegram_id INTEGER,
+        FOREIGN KEY(homework_id) REFERENCES homework(homework_id),
+        FOREIGN KEY(user_id) REFERENCES user(user_id)
+    )'''
+)
 
 cursor.execute('''
     DROP TABLE IF EXISTS questions         

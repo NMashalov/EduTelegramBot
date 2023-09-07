@@ -7,23 +7,30 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
 import aiosqlite
+from pathlib import Path
 
+path_to_db = Path(__file__).parent.parent.parent / 'database' / "telegram.db"
 
 router = Router()
 
 @router.message(Command(commands=["start"]))
 async def cmd_start(message: Message, state: FSMContext):
- msg.from_user.id, msg.from_user.first_name
+    id, first_name, last_name = message.from_user.id, message.from_user.first_name, message.from_user.last_name
 
-    db = await aiosqlite.connect(...)
-    cursor = await db.execute('SELECT * FROM some_table')
-    row = await cursor.fetchone()
-    rows = await cursor.fetchall()
-    await cursor.close()
-    await db.close()
 
-    msg.from_user.id, msg.from_user.first_name
+    if 
 
+    print(id,first_name,last_name)
+    db = await aiosqlite.connect(path_to_db)
+    cursor = await db.execute(
+    '''
+        insert into user (user_name,user_surname,telegram_id)
+        VALUES 
+        (?,?,?)
+    ''',(id,first_name,last_name))
+    await db.commit()
+
+    await state.update_data(cursor=cursor)                    
     await state.clear()
     await message.answer(
         text="Бот для загрузки заданий "

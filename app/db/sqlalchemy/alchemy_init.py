@@ -1,7 +1,15 @@
-from pathlib import Path
-import sqlite3
+from homework import homework_Base
+from test import test_Base, Question, Answer
+from user import user_Base
+from sqlalchemy import create_engine, MetaData
 
-examples = [
+from pathlib import Path
+
+path_to_db = Path(__file__).parent.parent.parent.parent / 'database' / "telegram.db"
+
+engine = create_engine(f'sqlite:///{path_to_db}', echo = True)
+
+exmaples = [
     {
         'Week': 1,
         'Question': 'Какой Питон Язык?',
@@ -40,33 +48,22 @@ examples = [
     },
 ]
 
-path_to_db = Path(__file__).parent.parent.parent / 'database' / "telegram.db"
-connection = sqlite3.connect(path_to_db.resolve())
-cursor = connection.cursor()
 
-for example in examples:
-    cursor.execute(
-    '''
-    INSERT INTO questions (question_text,week)
-    VALUES 
-    (?,?)
-    RETURNING  question_id
-    ''',
-    (example['Question'],example['Week'])
-    )
-    (question_id,) = cursor.fetchone()
+def init_db(engine):
+    for base in [homework_Base, test_Base, user_Base]:
+        base.metadata.create_all(engine)
 
-    answers  = example['Answers']
-    right_answers = [0]*len(answers)
-    right_answers[example['Right_answer']] = 1 
+def insert_examples(engine, exmaples):
 
-    cursor.executemany(
-    '''
-        insert into answers (question_id,answer_text,is_right)
-        VALUES 
-        (?,?,?)
-    ''',
-    [item for item in zip([question_id]*len(answers),answers,right_answers)]
-    )
+    jack = Question()
+    jack.addresses  # Пустой список
 
-connection.commit()
+    # Добавим адресов ему
+    jack.addresses = [
+            Address(email_address='jack@gmail.com'),
+            Address(email_address='j25@yahoo.com'),
+            Address(email_address='jack@hotmail.com'),
+    ]
+    
+
+init_db(engine)
