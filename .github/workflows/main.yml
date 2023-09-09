@@ -1,0 +1,24 @@
+name: Deploy
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy using ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_KEY }}
+          script: |
+            cd ~/like-passwords-bot
+            git pull
+            sudo docker stop like-passwords-bot
+            sudo docker rm like-passwords-bot
+            sudo docker rmi like-passwords-bot
+            sudo make build
+            sudo make run
