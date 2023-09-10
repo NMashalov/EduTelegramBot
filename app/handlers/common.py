@@ -2,41 +2,40 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message, ReplyKeyboardRemove
 
-from keyboard import make_row_keyboard
+from app.models.user import User
+from sqlalchemy import select
+
+from app.keyboard import make_row_keyboard
 from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 
-import aiosqlite
 from pathlib import Path
 
-path_to_db = Path(__file__).parent.parent.parent / 'database' / "telegram.db"
 
-router = Router()
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+
+
+router = Router(name="commands-router")
 
 @router.message(Command(commands=["start"]))
-async def cmd_start(message: Message, state: FSMContext):
-    id, first_name, last_name = message.from_user.id, message.from_user.first_name, message.from_user.last_name
-
-
-    if 
-
-    print(id,first_name,last_name)
-    db = await aiosqlite.connect(path_to_db)
-    cursor = await db.execute(
-    '''
-        insert into user (user_name,user_surname,telegram_id)
-        VALUES 
-        (?,?,?)
-    ''',(id,first_name,last_name))
-    await db.commit()
-
-    await state.update_data(cursor=cursor)                    
-    await state.clear()
+async def cmd_start(message: Message, state: FSMContext, session: AsyncSession):
+    id, name = message.from_user.id, message.from_user.first_name
+    await session.merge(User(id=message.from_user.id, name = name,))
+    await session.commit()
+    print(id,name)
     await message.answer(
-        text="Бот для загрузки заданий "
-             "Используй команду /upload_task",
-        reply_markup=ReplyKeyboardRemove()
+        text="Бот курса по Python для кафедры педагогики"
     )
+
+@router.message(Command(commands=['profile']))
+async def show_profile(message: Message, session: AsyncSession):
+    get_user_info = select(User).filter(User.id == message.from_user.id).first()
+    user = session.execute(get_user_info)
+
+    await message.answer(f"Name: {user.name}\n",
+                            f"Mipt mail: {user.mipt_mail}\n",
+                        f"Admin: {'Да' if user.admin else 'Нет'}")
 
 @router.message(Command(commands=["cancel"]))
 async def cmd_cancel(message: Message, state: FSMContext):

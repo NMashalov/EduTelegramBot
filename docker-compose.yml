@@ -1,0 +1,23 @@
+version: '3.8'
+services:
+    bot:
+        image: groosha/aiogram-and-sqlalchemy-demo:latest
+        restart: always
+        stop_signal: SIGINT
+        environment:
+            - BOT_TOKEN
+            - DB_HOST
+            - DB_USER
+            - DB_PASS
+            - DB_NAME
+        depends_on:
+            - db
+    db:
+        image: postgres:12-alpine
+        restart: always
+        environment:
+            POSTGRES_USER: ${DB_USER}
+            POSTGRES_PASSWORD: ${DB_PASS}
+            POSTGRES_DB: ${DB_NAME}
+        volumes:
+            - "/path/to/your/postgres/directory:/var/lib/postgresql/data"
