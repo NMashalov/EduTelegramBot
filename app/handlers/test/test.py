@@ -13,7 +13,20 @@ class Test(StatesGroup):
     question = State()
     results = State()
 
-router = Router()
+router = Router(name='test')
+
+@router.message(
+    Task.choose_task_type, 
+    F.text == 'Test'
+)
+async def food_chosen(message: Message, state: FSMContext):
+    await state.update_data(chosen_task=message.text.lower())
+    await message.answer(
+        text="Начинаем тест"
+    )
+    await state.set_state(Test.first_question)
+
+
 
 @router.message(
    Test.first_question  

@@ -16,6 +16,9 @@ from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
+from app.handlers.task import Task
+from app.handlers.test import Test
+
 router = Router(name="commands-router")
 
 @router.message(Command(commands=["start"]))
