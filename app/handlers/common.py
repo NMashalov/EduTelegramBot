@@ -18,27 +18,25 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.handlers.task import Task
 from app.handlers.test import Test
+from app.handlers.authorize import Authorize
 
 router = Router(name="commands-router")
 
 @router.message(Command(commands=["start"]))
 async def cmd_start(message: Message, state: FSMContext, session: AsyncSession):
     id, name = message.from_user.id, message.from_user.first_name
-    await session.merge(User(id=message.from_user.id, name = name,))
+    user = await session.merge(User(id=id, name = name,))
     await session.commit()
     print(id,name)
     await message.answer(
         text="Бот курса по Python для кафедры педагогики"
     )
+    if user:
+        await state.set_state(Test.question)
+    else:
+        await state.set_state(Authorize.question)
 
-@router.message(Command(commands=['profile']))
-async def show_profile(message: Message, session: AsyncSession):
-    get_user_info = select(User).filter(User.id == message.from_user.id).first()
-    user = session.execute(get_user_info)
 
-    await message.answer(f"Name: {user.name}\n",
-                            f"Mipt mail: {user.mipt_mail}\n",
-                        f"Admin: {'Да' if user.admin else 'Нет'}")
 
 @router.message(Command(commands=["cancel"]))
 async def cmd_cancel(message: Message, state: FSMContext):

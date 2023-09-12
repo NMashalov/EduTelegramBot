@@ -27,10 +27,6 @@ class UserQuizResults(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
     quiz_week: Mapped[int] 
     quiz_results: Mapped[int]
-    questions = relationship(
-        "Question",
-        primaryjoin="question.week==user_quiz_results.quiz_week",
-    )
     
 
     

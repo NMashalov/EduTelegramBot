@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message, PollAnswer
 
-from keyboard import make_row_keyboard
+from app.keyboard import make_row_keyboard
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from .test_examples import exmaples
@@ -14,6 +14,9 @@ class Test(StatesGroup):
     results = State()
 
 router = Router(name='test')
+
+@router.test
+
 
 @router.message(
     Task.choose_task_type, 

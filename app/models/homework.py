@@ -16,3 +16,11 @@ class Homework_results(Base):
     homework_id : Mapped[int] = mapped_column(ForeignKey("homework.id")) 
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id")) 
     student_homework_link: Mapped[str]
+
+class Homework_assign(Base):
+    __tablename__ = 'homework_questions'
+
+    id: Mapped[int] = mapped_column(primary_key = True)
+    homework_id : Mapped[int] = mapped_column(ForeignKey("homework.id"))
+    question: Mapped[str]
+    question_type: Mapped[str]

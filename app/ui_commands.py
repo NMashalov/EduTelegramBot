@@ -12,6 +12,5 @@ async def set_ui_commands(bot: Bot):
         BotCommand(command="Test", description="Attempt test or check results")
     ]
     await bot.set_my_commands(
-        commands=commands,
-        scope=BotCommandScopeAllPrivateChats()
+        commands=commands
     )

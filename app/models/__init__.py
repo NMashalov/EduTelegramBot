@@ -1,6 +1,6 @@
 from .base import Base
 from .homework import Homework, Homework_results
-from .quiz import Question, Answer
+from .quiz import Question, Answer, UserQuizResults
 from .user import User
 
 

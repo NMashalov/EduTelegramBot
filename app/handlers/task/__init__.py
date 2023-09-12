@@ -1,1 +1,1 @@
-from .job_type import router
+from .task import router
