@@ -8,4 +8,4 @@ class User(Base):
     id: Mapped[int]= mapped_column(primary_key=True)
     name: Mapped[str] 
     mipt_mail: Mapped[str] = mapped_column(default='') 
-    admin: Mapped[bool] = mapped_column(default=False)
+    admin: Mapped[bool] = mapped_column(server_default=False)

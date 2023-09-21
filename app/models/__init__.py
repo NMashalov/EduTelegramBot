@@ -1,5 +1,5 @@
 from .base import Base
-from .homework import Homework, Homework_results
+from .homework import Homework, UserHomeworkResults
 from .quiz import Question, Answer, UserQuizResults
 from .user import User
 

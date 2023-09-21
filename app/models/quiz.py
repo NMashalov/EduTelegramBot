@@ -24,9 +24,9 @@ class Answer(Base):
 class UserQuizResults(Base):
     __tablename__ = 'user_quiz_results'
     id: Mapped[int] = mapped_column(primary_key =True)
+    quiz_week: Mapped[int] = mapped_column(server_default=0)
+    quiz_results: Mapped[int] = mapped_column(server_default=0)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
-    quiz_week: Mapped[int] 
-    quiz_results: Mapped[int]
     
 
     
