@@ -15,7 +15,9 @@ class Test(StatesGroup):
 
 router = Router(name='test')
 
-@router.test
+router.message.middleware(CounterMiddleware())
+
+
 
 
 @router.message(

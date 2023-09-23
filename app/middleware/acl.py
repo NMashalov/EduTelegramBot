@@ -19,38 +19,29 @@ class ACLMiddleware(BaseMiddleware):
         event: TelegramObject,
         data: Dict[str, Any],
         ):
-        event = data['event_from_user']
+        user_data = data['event_from_user']
+        user_id, username = user_data.id, user_data.username 
         session = data["session"] 
-        user_id = user.id
 
-        user = await User.get(user_id)
-
-        get_user_info = select(User).filter_by(id= message.from_user.id).first()
+        get_user_info = await session.execute(select(User).filter_by(id= user_id))
 
         user: User = await get_user_info.scalar().first()
 
         if user is None:
-
             await event.answer(
-                "Бот по выходным не работает!",
+                "Вы не авторизованы",
                 show_alert=True
             )
 
-        if user is None:
-            user = await User.create(id=user_id)
-        chat = await Chat.get(chat_id)
-        if chat is None:
-            chat = await Chat.create(id=chat_id, type=chat_type)
+            await session.merge(User(id=user_id,name=username))
+            await session.commit()
+            return 
+        elif user.mipt_mail is None:
+            await event.answer(
+                "Вы не указали mipt почту. Пройдите авторизацию",
+                show_alert=True
+            )
+            return
+        else:
+            return await handler(event, data)
 
-        data["user"] = user
-        data["chat"] = chat
-
-        db_session: AsyncSession = data.get("db_session")
-
-        self._logger.debug(f"Getting user with ID {user_id}")
-
-        u = await user.get_user_by_tg_id(db_session, user_id)
-
-        if u is None:
-            self._logger.debug(f"User with ID {user_id} not found, creating...")
-            u = await user.create_user(db_session, telegram_id=user_id)
