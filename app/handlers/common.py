@@ -16,7 +16,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.handlers.task import Task
 from app.handlers.test import Test
-from app.handlers.authorize import Authorize
+from app.handlers.auth import Auth
 
 router = Router(name="commands-router")
 
@@ -32,7 +32,7 @@ async def cmd_start(message: Message, state: FSMContext, session: AsyncSession):
     if user:
         await state.set_state(Test.question)
     else:
-        await state.set_state(Authorize.question)
+        await state.set_state(Auth.question)
 
 
 

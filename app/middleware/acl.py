@@ -35,6 +35,7 @@ class ACLMiddleware(BaseMiddleware):
 
             await session.merge(User(id=user_id,name=username))
             await session.commit()
+            await state.set_state(Auth.question)
             return 
         elif user.mipt_mail is None:
             await event.answer(
