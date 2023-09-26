@@ -1,0 +1,13 @@
+<b>🎓 Профиль</b>
+
+<b>🙂 имя: <em> {{ profile.full_name.ru }} </em></b>
+
+<b>⚙️ ID Студента: <code>{{ profile.id }}</code></b>
+
+<b>🏢 Факультет: <em>{{ profile.faculty.ru }} </em></b>
+
+<b>ℹ️ Курс: <code>{{ profile.course }}</code></b>
+
+<b>⏳ Период обучения: {{ profile.training_period }}{% if profile.training_period < 5 %} года {% else %} лет {% endif %}</b>
+
+<b>🕔 Год поступления: {{ profile.entrance_year }}</b>

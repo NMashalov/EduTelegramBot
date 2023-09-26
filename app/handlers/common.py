@@ -16,8 +16,7 @@ from app.services.reminder import sheduled_message
 from aiogram import Bot
 
 from services.reminder import TelegramMethodJob
-
-
+from telegram
 
 router = Router(name="commands-router")
 
@@ -26,6 +25,8 @@ async def cmd_start(message: Message, state: FSMContext, session: AsyncSession):
     await message.answer(
         text="Бот курса по Python для кафедры педагогики"
     )
+
+
 
 @router.message(Command(commands=["remind"]))
 async def cmd_start(message: Message, scheduler: AsyncIOScheduler, bot: Bot):
