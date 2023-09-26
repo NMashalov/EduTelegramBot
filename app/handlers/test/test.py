@@ -15,13 +15,8 @@ class Test(StatesGroup):
 
 router = Router(name='test')
 
-router.message.middleware(CounterMiddleware())
-
-
-
 
 @router.message(
-    Task.choose_task_type, 
     F.text == 'Test'
 )
 async def food_chosen(message: Message, state: FSMContext):

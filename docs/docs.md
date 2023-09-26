@@ -1,6 +1,25 @@
 # Development guides
 
-![Документация]()
+![Docs](.excalidraw.png)
+
+## Repository organization
+
+```bash
+├── handlers
+├── keyboard
+├── main.py
+├── middleware
+├── models
+├── services
+├── settings.py
+├── settings.yml
+├── templates.py
+├── ui_commands.py
+└── utils
+
+```
+
+
 
 
 ## Scheduler 

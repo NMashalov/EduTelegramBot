@@ -7,7 +7,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import StatesGroup, State
 from aiogram import F,Router
 
-from .upload_task import upload_router, TaskUpload
+from .upload_task import TaskUpload
 
 TASKS_WEEK = [i for i in range(1,13)]
 

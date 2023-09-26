@@ -1,11 +1,13 @@
 # Telegram bot for managment of educational group
 
-Teacher are obedient to accomplish routine tasks of receiving, storing and bringing info in restricted intrefaces. This bot was developed to facilitate that issue for bringing more creativity in educational proccess 
+Teacher are obedient to accomplish routine tasks of receiving, storing and bringing info in restricted intrefaces
 
-## Active features
+This bot was developed to facilitate that issue for bringing more joy and creativity in educational proccess 
+
+## Active features ✅
 
 ### Authorization 👷 
-Functional of bot can be restricted with group users. 
+Functional of bot can be restricted with group users
 ### Tests 📚
 Teacher can provide students with simple poll examination
 ### Task Uploading 🌐
